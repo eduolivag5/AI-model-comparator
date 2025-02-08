@@ -1,0 +1,21 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+    font-family: "Aptos";
+    src: url("/src/assets/fonts/Aptos.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+  }
+  @font-face {
+    font-family: "Aptos";
+    src: url("/src/assets/fonts/Aptos-Bold.ttf") format("truetype");
+    font-weight: bold;
+    font-style: normal;
+  }
+  
+  body {
+    font-family: "Aptos", sans-serif;
+  }
+  
