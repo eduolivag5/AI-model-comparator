@@ -3,6 +3,7 @@ export interface Model {
   name: string;
   company: string;
   icon: string;
+  function: (message: string) => Promise<string | undefined>;
 }
 
 export interface Message {

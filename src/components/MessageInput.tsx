@@ -1,5 +1,9 @@
 import React, { useState } from "react";
-import { useChatStore } from "../store";
+import { useChatStore } from "../store/chats";
+import ModelSelector from "./ModelSelector";
+import { useModelsStore } from "../store/models";
+import { Button, Textarea } from "@heroui/react";
+import { PaperAirplaneIcon, TrashIcon } from "@heroicons/react/24/solid";
 
 interface Props {
   onSend: (message: string) => void;
@@ -9,6 +13,7 @@ const MessageInput: React.FC<Props> = ({ onSend }) => {
   const [message, setMessage] = useState("");
 
   const { deleteMessages } = useChatStore();
+  const { selectedModels } = useModelsStore();
 
   const handleSend = () => {
     if (message.trim()) {
@@ -24,26 +29,39 @@ const MessageInput: React.FC<Props> = ({ onSend }) => {
   };
 
   return (
-    <div className="flex gap-4">
-      <textarea
-        className="flex-grow px-4 py-2 bg-foreground border border-secondary rounded-lg resize-none focus:outline-none"
+    <div className="flex flex-col md:flex-row justify-between gap-2">
+      <ModelSelector />
+      <Textarea
+        isClearable
+        disableAnimation
+        disableAutosize
+        classNames={{
+          base: "max-w-4xl",
+          input: "resize-y min-h-[40px]",
+        }}
         placeholder="Escribe tu mensaje..."
         value={message}
         onChange={(e) => setMessage(e.target.value)}
+        onClear={() => setMessage("")}
       />
-      <div className="flex flex-col gap-2">
-        <button
-          onClick={handleSend}
-          className="px-6 py-2 bg-primary rounded-lg"
+      <div className="flex md:flex-col gap-2">
+        <Button
+          onPress={handleSend}
+          variant="ghost"
+          className="flex-1"
+          disabled={selectedModels.length === 0}
         >
+          <PaperAirplaneIcon className="w-4 h-4" />
           Enviar
-        </button>
-        <button
-          onClick={handleDeleteConversation}
-          className="px-6 py-2 bg-secondary rounded-lg"
+        </Button>
+        <Button
+          variant="ghost"
+          className="flex-1"
+          onPress={handleDeleteConversation}
         >
-          Eliminar mensajes
-        </button>
+          <TrashIcon className="w-4 h-4" />
+          Borrar historial
+        </Button>
       </div>
       
     </div>

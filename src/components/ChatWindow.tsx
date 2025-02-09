@@ -1,5 +1,6 @@
-import { useChatStore } from "../store";
+import { useChatStore } from "../store/chats";
 import { Model } from "../types";
+import ReactMarkdown from 'react-markdown';
 
 interface ChatWindowProps {
   model: Model;
@@ -43,7 +44,7 @@ export default function ChatWindow({ model }: ChatWindowProps) {
                         msg.sender === "user" ? "text-right bg-primary" : "text-left bg-secondary"
                       }`}
                     >
-                      {msg.text}
+                      <ReactMarkdown>{msg.text}</ReactMarkdown>
                     </span>
                     
                     {msg.sender === "user" && (

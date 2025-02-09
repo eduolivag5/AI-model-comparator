@@ -1,47 +1,65 @@
+import { useState } from "react";
 import MessageInput from "./components/MessageInput";
 import ChatWindow from "./components/ChatWindow";
-import { Model } from "./types";
-import { useChatStore } from "./store";
-import { useMutation } from "@tanstack/react-query";
-import { getOpenAIResponse } from "./api/openai";
+import { useChatStore } from "./store/chats";
+import { useModelsStore } from "./store/models";
 
-const models: Model[] = [
-  { id: "gpt-4", name: "gpt-4", company: "OpenAI", icon: "chatgpt-icon.svg" },
-  { id: "gemini", name: "gemini", company: "Google", icon: "google-gemini-icon.svg" },
-]
-
-export default function App () {
+export default function App() {
   const { messages, addMessage } = useChatStore();
+  const { selectedModels } = useModelsStore();
 
-  const { mutate: sendMessage} = useMutation({
-    mutationFn: getOpenAIResponse,
-    onSuccess: (data) => {
-      addMessage("gpt-4", {sender: "assistant", text: data!});
-    },
-    onError: (error) => {
-      console.error("Error al llamar a OpenAI:", error);
-    },
-  })
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  async function handleSendMessage (message: string) {
-    for (const model of models) {
-      addMessage(model.id, {sender: "user", text: message});
+  
+  async function handleSendMessage(message: string) {
+    setIsLoading(true);
+    setError(null); 
+
+    
+    selectedModels.forEach((model) => {
+      addMessage(model.id, { sender: "user", text: message });
+    });
+
+    try {
+      
+      await Promise.all(
+        selectedModels.map((model) =>
+          model.function(message)
+            .then((data) => {
+              addMessage(model.id, { sender: "assistant", text: data! });
+            })
+            .catch((err) => {
+              console.error(`Error al llamar a ${model.name}:`, err);
+              setError(`Error al llamar a ${model.name}`);
+            })
+        )
+      );
+    } catch (error) {
+      console.error("Hubo un error al ejecutar las mutaciones:", error);
+      setError("Se ha producido un error. Inténtalo de nuevo más tarde.");
+    } finally {
+      setIsLoading(false);
     }
 
-    await sendMessage(message);
     console.log(messages);
-  };
+  }
 
   return (
     <div className="h-screen p-6 flex flex-col bg-background text-white">
       <MessageInput onSend={handleSendMessage} />
-      
+
+      {isLoading && <div className="mt-2 text-sm">Obteniendo respuestas...</div>}
+      {error && <div className="mt-2 text-sm text-red-400">{error}</div>}
+
       {/* Contenedor que ocupa el espacio restante */}
-      <div className="flex-1 flex gap-4 mt-4 pt-4 border-t border-t-secondary overflow-auto">
-        {models.map((model, index) => (
+      <div className="flex-1 flex flex-col md:flex-row gap-4 mt-4 pt-4 border-t border-t-secondary overflow-auto">
+        {selectedModels.map((model, index) => (
           <ChatWindow key={index} model={model} />
         ))}
       </div>
+
+      
     </div>
   );
-};
+}
