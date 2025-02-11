@@ -4,6 +4,7 @@ export interface Model {
   company: string;
   icon: string;
   function: (message: string) => Promise<string | undefined>;
+  active: boolean;
 }
 
 export interface Message {

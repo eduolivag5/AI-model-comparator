@@ -10,17 +10,18 @@ export default function ChatWindow({ model }: ChatWindowProps) {
   const { messages } = useChatStore();
 
   return (
-    <div className="flex-1 flex flex-col">
-      <div className="flex gap-4 items-center mb-2">
-        <img src={model.icon} alt={model.name} className="w-10 h-10" />
-        <div>
-          <span className="text-lg font-bold uppercase">{model.name}</span>
-          <p>{model.company}</p>
+    <div className="flex flex-col">
+      
+      <div className="flex gap-4 items-center mb-2 text-white">
+        <img src={model.icon} alt={model.name} className="w-8 h-8" />
+        <div className="text-sm flex flex-col">
+          <span className="font-bold uppercase">{model.name}</span>
+          <span>{model.company}</span>
         </div>
       </div>
 
       {/* Contenedor de mensajes con scroll */}
-      <div className="flex-1 overflow-y-auto p-4 bg-foreground border border-secondary rounded-lg h-full">
+      <div className="flex-1 overflow-y-auto rounded-lg h-full">
         {Object.keys(messages).length ? (
           Object.keys(messages)
             .filter((key) => model.id === key)
@@ -40,8 +41,8 @@ export default function ChatWindow({ model }: ChatWindowProps) {
                     )}
                     
                     <span
-                      className={`flex items-center gap-2 p-2 rounded-lg text-sm break-words ${
-                        msg.sender === "user" ? "text-right bg-primary" : "text-left bg-secondary"
+                      className={`flex text-white items-center gap-2 p-2 rounded-lg text-sm break-words ${
+                        msg.sender === "user" ? "text-right bg-gradient-to-r from-indigo-700 to-blue-700" : "text-left"
                       }`}
                     >
                       <ReactMarkdown>{msg.text}</ReactMarkdown>
@@ -59,7 +60,7 @@ export default function ChatWindow({ model }: ChatWindowProps) {
               </div>
             ))
         ) : (
-          <p className="text-gray-400">No hay mensajes aún.</p>
+          <p className="text-gray-400 text-sm">No hay mensajes aún.</p>
         )}
       </div>
     </div>

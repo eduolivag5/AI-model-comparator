@@ -29,7 +29,7 @@ const MessageInput: React.FC<Props> = ({ onSend }) => {
   };
 
   return (
-    <div className="flex flex-col md:flex-row justify-between gap-2">
+    <div className="flex flex-col md:flex-row gap-2">
       <ModelSelector />
       <Textarea
         isClearable
@@ -48,7 +48,7 @@ const MessageInput: React.FC<Props> = ({ onSend }) => {
         <Button
           onPress={handleSend}
           variant="ghost"
-          className="flex-1"
+          className="flex-1 py-1"
           disabled={selectedModels.length === 0}
         >
           <PaperAirplaneIcon className="w-4 h-4" />
@@ -56,7 +56,7 @@ const MessageInput: React.FC<Props> = ({ onSend }) => {
         </Button>
         <Button
           variant="ghost"
-          className="flex-1"
+          className="flex-1 py-1"
           onPress={handleDeleteConversation}
         >
           <TrashIcon className="w-4 h-4" />

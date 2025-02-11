@@ -18,6 +18,7 @@ export default function ModelSelector() {
             placeholder="Selecciona los modelos"
             selectedKeys={selectedModels.map((model) => model.id)} 
             selectionMode="multiple"
+            disabledKeys={models.filter((model) => !model.active).map((model) => model.id)}
             onChange={(e) => handleSelectionChange(e.target.value.split(","))} 
         >
             {models.map((model) => (

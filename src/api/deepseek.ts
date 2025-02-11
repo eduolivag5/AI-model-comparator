@@ -1,8 +1,8 @@
 import OpenAI from "openai";
 
-const openai = new OpenAI({  dangerouslyAllowBrowser: true, apiKey: import.meta.env.VITE_OPENAI_API_KEY })
+const openai = new OpenAI({  baseURL: "https://api.deepseek.com/v1", dangerouslyAllowBrowser: true, apiKey: import.meta.env.VITE_DEEPSEEK_API_KEY })
 
-export const getOpenAIResponse = async (message: string) => {
+export const getDeepseekResponse = async (message: string) => {
     try {
       const stream = await openai.chat.completions.create({
         model: "gpt-4o-mini",
@@ -17,9 +17,9 @@ export const getOpenAIResponse = async (message: string) => {
         responseText += text;
       }
   
-      console.log("Respuesta de OpenAI:", responseText);
+      console.log("Respuesta de Deepseek:", responseText);
       return responseText;
     } catch (error) {
-      console.error("Error al llamar a OpenAI:", error);
+      console.error("Error al llamar a Deepseek:", error);
     }
   };
