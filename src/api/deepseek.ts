@@ -16,8 +16,7 @@ export const getDeepseekResponse = async (message: string) => {
         const text = chunk.choices[0]?.delta?.content || "";
         responseText += text;
       }
-  
-      console.log("Respuesta de Deepseek:", responseText);
+      
       return responseText;
     } catch (error) {
       console.error("Error al llamar a Deepseek:", error);

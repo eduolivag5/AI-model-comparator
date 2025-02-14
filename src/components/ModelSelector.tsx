@@ -21,10 +21,15 @@ export default function ModelSelector() {
             disabledKeys={models.filter((model) => !model.active).map((model) => model.id)}
             onChange={(e) => handleSelectionChange(e.target.value.split(","))} 
         >
-            {models.map((model) => (
-                <SelectItem startContent={<Avatar alt="Argentina" className="w-6 h-6" src={model.icon} />} key={model.id}>
-                    {model.name}
-                </SelectItem>
+            {models
+                .sort((a, b) => Number(b.active) - Number(a.active)) // true (1) se coloca antes que false (0)
+                .map((model) => (
+                    <SelectItem
+                        startContent={<Avatar alt={model.name} className="w-6 h-6" src={model.icon} />}
+                        key={model.id}
+                    >
+                        {model.name}
+                    </SelectItem>
             ))}
         </Select>
     );

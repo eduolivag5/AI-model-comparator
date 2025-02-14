@@ -9,7 +9,7 @@ createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <QueryClientProvider client={new QueryClient()}>
       <HeroUIProvider>
-        <App />
+        <App />     
       </HeroUIProvider>
     </QueryClientProvider>
   </StrictMode>

@@ -16,8 +16,7 @@ export const getOpenAIResponse = async (message: string) => {
         const text = chunk.choices[0]?.delta?.content || "";
         responseText += text;
       }
-  
-      console.log("Respuesta de OpenAI:", responseText);
+      
       return responseText;
     } catch (error) {
       console.error("Error al llamar a OpenAI:", error);

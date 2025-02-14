@@ -4,6 +4,7 @@ export interface Model {
   company: string;
   icon: string;
   function: (message: string) => Promise<string | undefined>;
+  last_execution_duration: number | null;
   active: boolean;
 }
 

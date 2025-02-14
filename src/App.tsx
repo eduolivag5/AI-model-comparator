@@ -3,59 +3,55 @@ import MessageInput from "./components/MessageInput";
 import { useChatStore } from "./store/chats";
 import { useModelsStore } from "./store/models";
 import TabsSelector from "./components/TabsSelector";
-import MainLogo from "./components/MainLogo";
 
 export default function App() {
-  const { messages, addMessage } = useChatStore();
-  const { selectedModels } = useModelsStore();
+  const { addMessage } = useChatStore();
+  const { selectedModels, setModelExecutionDuration } = useModelsStore();
   const [error, setError] = useState<string | null>(null);
 
-  
   async function handleSendMessage(message: string) {
-    setError(null); 
-    
+    setError(null);
+
     selectedModels.forEach((model) => {
       addMessage(model.id, { sender: "user", text: message });
     });
 
     try {
-      
       await Promise.all(
         selectedModels.map((model) =>
-          model.function(message)
-            .then((data) => {
-              addMessage(model.id, { sender: "assistant", text: data! });
-            })
-            .catch((err) => {
-              console.error(`Error al llamar a ${model.name}:`, err);
+          new Promise(async (resolve, reject) => {
+            const startTime = performance.now();
+            try {
+              const data = await model.function(message);
+              addMessage(model.id, { sender: "assistant", text: data?.trim() || "" });
+
+              const endTime = performance.now(); // Guardamos el tiempo de fin
+              const duration = endTime - startTime; // Calculamos la duración
+              setModelExecutionDuration(model.id, duration);
+              resolve(data);
+            } catch (err) {
               setError(`Error al llamar a ${model.name}`);
-            })
+              addMessage(model.id, { sender: "assistant", text: "Se ha producido un error. Inténtalo de nuevo más tarde." });
+              reject(err);
+            }
+          })
         )
       );
-    } catch (error) {
-      console.error("Hubo un error al ejecutar las mutaciones:", error);
+    } catch (err) {
       setError("Se ha producido un error. Inténtalo de nuevo más tarde.");
+      console.log(error)
     }
-
-    console.log(messages);
   }
 
   return (
-    <div className="h-[100dvh] p-6 flex flex-col bg-background text-white max-w-6xl mx-auto">
-      
-      <MainLogo />
-      
-      <MessageInput onSend={handleSendMessage} />
+    <div className="h-[100dvh] py-6 text-white max-w-6xl mx-auto flex gap-10">
 
-      {error && <div className="mt-2 text-sm text-red-400">{error}</div>}
-
-      <hr className="my-6 border-t border-zinc-800" />
-
-      <div id="tabs-selector">
-        <TabsSelector />
+      <div className="min-w-80">
+        <MessageInput onSend={handleSendMessage} />
       </div>
 
-      
+      <TabsSelector />
     </div>
   );
+  
 }

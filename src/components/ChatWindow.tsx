@@ -10,18 +10,26 @@ export default function ChatWindow({ model }: ChatWindowProps) {
   const { messages } = useChatStore();
 
   return (
-    <div className="flex flex-col">
-      
-      <div className="flex gap-4 items-center mb-2 text-white">
-        <img src={model.icon} alt={model.name} className="w-8 h-8" />
-        <div className="text-sm flex flex-col">
-          <span className="font-bold uppercase">{model.name}</span>
-          <span>{model.company}</span>
+    <div className="flex flex-col h-full">
+      <div className="flex-shrink-0 flex items-center justify-between mb-2 text-white">
+        <div className="flex gap-4 items-center">
+          <img src={model.icon} alt={model.name} className="w-8 h-8" />
+          <div className="text-sm flex flex-col">
+            <span className="font-bold uppercase">{model.name}</span>
+            <span>{model.company}</span>
+          </div>
         </div>
+
+        {model.last_execution_duration && (
+          <div className="items-end justify-end text-right text-xs text-gray-300">
+            <p>Tiempo de ejecución:</p>
+            <p>{model.last_execution_duration.toFixed(2)}ms</p>
+          </div>
+        )}
       </div>
 
-      {/* Contenedor de mensajes con scroll */}
-      <div className="flex-1 overflow-y-auto rounded-lg h-full">
+      {/* Contenedor de mensajes que puede desplazarse, pero sin afectar el layout general */}
+      <div className="flex-1 overflow-y-auto rounded-lg p-2">
         {Object.keys(messages).length ? (
           Object.keys(messages)
             .filter((key) => model.id === key)
@@ -45,7 +53,7 @@ export default function ChatWindow({ model }: ChatWindowProps) {
                         msg.sender === "user" ? "text-right bg-gradient-to-r from-indigo-700 to-blue-700" : "text-left"
                       }`}
                     >
-                      <ReactMarkdown>{msg.text}</ReactMarkdown>
+                      <ReactMarkdown className="whitespace-pre-wrap">{msg.text}</ReactMarkdown>
                     </span>
                     
                     {msg.sender === "user" && (

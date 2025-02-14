@@ -29,22 +29,19 @@ const MessageInput: React.FC<Props> = ({ onSend }) => {
   };
 
   return (
-    <div className="flex flex-col md:flex-row gap-2">
+    <div className="flex flex-col gap-2">
+      <span className="py-4 text-5xl font-bold text-center bg-clip-text text-transparent bg-gradient-to-r from-red-500 to-indigo-700 drop-shadow-[0px_0px_120px_rgba(98,56,214,1)] inline-block">
+        AI Compare
+      </span> 
       <ModelSelector />
       <Textarea
         isClearable
-        disableAnimation
-        disableAutosize
-        classNames={{
-          base: "max-w-4xl",
-          input: "resize-y min-h-[40px]",
-        }}
         placeholder="Escribe tu mensaje..."
         value={message}
         onChange={(e) => setMessage(e.target.value)}
         onClear={() => setMessage("")}
       />
-      <div className="flex md:flex-col gap-2">
+      <div className="flex gap-2">
         <Button
           onPress={handleSend}
           variant="ghost"
@@ -63,8 +60,8 @@ const MessageInput: React.FC<Props> = ({ onSend }) => {
           Borrar historial
         </Button>
       </div>
-      
     </div>
+
   );
 };
 
