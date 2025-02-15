@@ -1,15 +1,15 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useChatStore } from "../store/chats";
 import ModelSelector from "./ModelSelector";
 import { useModelsStore } from "../store/models";
 import { Button, Textarea } from "@heroui/react";
 import { PaperAirplaneIcon, TrashIcon } from "@heroicons/react/24/solid";
 
-interface Props {
+interface MessageInputProps {
   onSend: (message: string) => void;
 }
 
-const MessageInput: React.FC<Props> = ({ onSend }) => {
+const MessageInput = ({ onSend } : MessageInputProps) => {
   const [message, setMessage] = useState("");
 
   const { deleteMessages } = useChatStore();

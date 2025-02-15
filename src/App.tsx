@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import MessageInput from "./components/MessageInput";
 import { useChatStore } from "./store/chats";
 import { useModelsStore } from "./store/models";
@@ -8,6 +8,7 @@ export default function App() {
   const { addMessage } = useChatStore();
   const { selectedModels, setModelExecutionDuration } = useModelsStore();
   const [error, setError] = useState<string | null>(null);
+  const messagesRef = useRef<HTMLDivElement>(null); // Referencia a #messages
 
   async function handleSendMessage(message: string) {
     setError(null);
@@ -37,9 +38,15 @@ export default function App() {
           })
         )
       );
+
+      // Hacer scroll automático al inicio de #messages
+      if (messagesRef.current) {
+        messagesRef.current.scrollIntoView({ behavior: "smooth" });
+      }
+
     } catch (err) {
       setError("Se ha producido un error. Inténtalo de nuevo más tarde.");
-      console.log(error)
+      console.log(error);
     }
   }
 
@@ -50,8 +57,11 @@ export default function App() {
         <MessageInput onSend={handleSendMessage} />
       </div>
 
-      <TabsSelector />
+      {/* Agregar ref al contenedor #messages */}
+      <div id="messages" ref={messagesRef} className="py-4 w-full">
+        <TabsSelector />
+      </div>
+      
     </div>
   );
-  
 }
