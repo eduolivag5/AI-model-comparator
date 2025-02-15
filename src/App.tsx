@@ -58,7 +58,7 @@ export default function App() {
       </div>
 
       {/* Agregar ref al contenedor #messages */}
-      <div id="messages" ref={messagesRef} className="py-4 w-full">
+      <div id="messages" ref={messagesRef} className="w-full h-full">
         <TabsSelector />
       </div>
       
