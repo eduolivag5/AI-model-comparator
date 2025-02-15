@@ -3,6 +3,7 @@ import { useChatStore } from "../store/chats";
 import { Model } from "../types";
 import ReactMarkdown from 'react-markdown';
 import { CheckIcon } from "../assets/icons/CheckIcon";
+import { useEffect, useRef } from "react";
 
 interface ChatWindowProps {
   model: Model;
@@ -10,6 +11,14 @@ interface ChatWindowProps {
 
 export default function ChatWindow({ model }: ChatWindowProps) {
   const { messages } = useChatStore();
+
+  const messagesEndRef = useRef<HTMLDivElement | null>(null); 
+
+  useEffect(() => {    
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [messages]); 
 
   return (
     <div className="flex flex-col h-full">
@@ -71,6 +80,8 @@ export default function ChatWindow({ model }: ChatWindowProps) {
                     )}
                   </div>
                 ))}
+                {/* Elemento invisible para hacer scroll al final */}
+                <div ref={messagesEndRef} />
               </div>
             ))
         ) : (

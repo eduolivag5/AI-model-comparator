@@ -21,8 +21,6 @@ export default function TabsSelector() {
                       <ChatWindow key={index} model={model} />
                     </CardBody>
                 </Card>
-                
-                {/*<ChatWindow key={index} model={model} />*/}
               </Tab>
             ))}
           </Tabs>
