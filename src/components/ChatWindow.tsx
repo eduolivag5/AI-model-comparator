@@ -1,6 +1,8 @@
+import { Chip } from "@heroui/react";
 import { useChatStore } from "../store/chats";
 import { Model } from "../types";
 import ReactMarkdown from 'react-markdown';
+import { CheckIcon } from "../assets/icons/CheckIcon";
 
 interface ChatWindowProps {
   model: Model;
@@ -21,11 +23,16 @@ export default function ChatWindow({ model }: ChatWindowProps) {
         </div>
 
         {model.last_execution_duration && (
-          <div className="items-end justify-end text-right text-xs text-gray-300">
-            <p>Tiempo de ejecución:</p>
-            <p>{model.last_execution_duration.toFixed(2)}ms</p>
+          <div>
+            <div className="items-end justify-end text-right text-xs text-gray-300">
+              <p>Tiempo de ejecución:</p>
+              <p>{model.last_execution_duration.toFixed(2)}ms</p>
+            </div>
+            
           </div>
         )}
+        
+        {model.active && (<Chip startContent={<CheckIcon size={14} />} color="success" size="sm" variant="faded">Active</Chip>)}
       </div>
 
       {/* Contenedor de mensajes que puede desplazarse, pero sin afectar el layout general */}
@@ -34,7 +41,7 @@ export default function ChatWindow({ model }: ChatWindowProps) {
           Object.keys(messages)
             .filter((key) => model.id === key)
             .map((key) => (
-              <div key={key} className="space-y-2">
+              <div key={key} className="space-y-4">
                 {messages[key].map((msg, index) => (
                   <div
                     key={index}
@@ -49,8 +56,8 @@ export default function ChatWindow({ model }: ChatWindowProps) {
                     )}
                     
                     <span
-                      className={`flex text-white items-center gap-2 p-2 rounded-lg text-sm break-words ${
-                        msg.sender === "user" ? "text-right bg-gradient-to-r from-indigo-700 to-blue-700" : "text-left"
+                      className={`flex text-white items-center gap-2 p-2 rounded-lg text-xs md:text-sm break-words ${
+                        msg.sender === "user" ? "text-right bg-gradient-to-r from-indigo-700 to-blue-700" : "text-left bg-background"
                       }`}
                     >
                       <ReactMarkdown className="whitespace-pre-wrap">{msg.text}</ReactMarkdown>

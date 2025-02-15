@@ -25,8 +25,8 @@ export default function App() {
               const data = await model.function(message);
               addMessage(model.id, { sender: "assistant", text: data?.trim() || "" });
 
-              const endTime = performance.now(); // Guardamos el tiempo de fin
-              const duration = endTime - startTime; // Calculamos la duración
+              const endTime = performance.now(); 
+              const duration = endTime - startTime; 
               setModelExecutionDuration(model.id, duration);
               resolve(data);
             } catch (err) {
@@ -44,7 +44,7 @@ export default function App() {
   }
 
   return (
-    <div className="h-[100dvh] py-6 text-white max-w-6xl mx-auto flex gap-10">
+    <div className="h-[100dvh] p-4 md:px-0 md:py-6 text-white max-w-6xl mx-auto flex flex-col md:flex-row gap-10">
 
       <div className="min-w-80">
         <MessageInput onSend={handleSendMessage} />
