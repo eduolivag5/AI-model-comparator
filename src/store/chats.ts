@@ -2,17 +2,34 @@ import { create } from "zustand";
 import { Message } from "../types";
 
 interface ChatState {
-  messages: Record<string, Message[]>; // Mensajes por modelo (GPT-4, Gemini, etc.)
+  messages: Record<string, Message[]>; 
   addMessage: (modelId: string, message: Message) => void;
   deleteMessages: () => void;
 }
 
-const LOCAL_STORAGE_KEY = "chatMessages";  // Clave para almacenar los mensajes en localStorage
+const LOCAL_STORAGE_KEY = "chatMessages";  
+const EXPIRATION_TIME = 24 * 60 * 60 * 1000; // 24 horas en milisegundos
+
+const cleanOldMessages = (messages: Record<string, Message[]>) => {
+  const now = Date.now();
+  const filteredMessages: Record<string, Message[]> = {};
+
+  Object.keys(messages).forEach((modelId) => {
+    filteredMessages[modelId] = messages[modelId].filter(
+      (msg) => now - new Date(msg.timestamp).getTime() < EXPIRATION_TIME
+    );
+  });
+
+  return filteredMessages;
+};
 
 export const useChatStore = create<ChatState>((set) => {
-  // Paso 1: Recuperar los mensajes desde localStorage al inicializar el store
   const storedMessages = localStorage.getItem(LOCAL_STORAGE_KEY);
-  const initialMessages = storedMessages ? JSON.parse(storedMessages) : {};
+  let initialMessages = storedMessages ? JSON.parse(storedMessages) : {};
+
+  // Limpiar mensajes antiguos al cargar
+  initialMessages = cleanOldMessages(initialMessages);
+  localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(initialMessages));
 
   return {
     messages: initialMessages,
@@ -22,14 +39,15 @@ export const useChatStore = create<ChatState>((set) => {
           ...state.messages,
           [modelId]: [...(state.messages[modelId] || []), message],
         };
-        // Paso 2: Guardar los mensajes actualizados en localStorage
-        localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(updatedMessages));
-        return { messages: updatedMessages };
+
+        const cleanedMessages = cleanOldMessages(updatedMessages);
+        localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(cleanedMessages));
+
+        return { messages: cleanedMessages };
       });
     },
     deleteMessages: () => {
       set({ messages: {} });
-      // Paso 3: Eliminar los mensajes del localStorage
       localStorage.removeItem(LOCAL_STORAGE_KEY);
     },
   };

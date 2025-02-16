@@ -14,7 +14,7 @@ export default function App() {
     setError(null);
 
     selectedModels.forEach((model) => {
-      addMessage(model.id, { sender: "user", text: message });
+      addMessage(model.id, { sender: "user", text: message, timestamp: new Date().toISOString() });
     });
 
     try {
@@ -24,7 +24,7 @@ export default function App() {
             const startTime = performance.now();
             try {
               const data = await model.function(message);
-              addMessage(model.id, { sender: "assistant", text: data?.trim() || "" });
+              addMessage(model.id, { sender: "assistant", text: data?.trim() || "", timestamp: new Date().toISOString() });
 
               const endTime = performance.now(); 
               const duration = endTime - startTime; 
@@ -32,7 +32,7 @@ export default function App() {
               resolve(data);
             } catch (err) {
               setError(`Error al llamar a ${model.name}`);
-              addMessage(model.id, { sender: "assistant", text: "Se ha producido un error. Inténtalo de nuevo más tarde." });
+              addMessage(model.id, { sender: "assistant", text: "Se ha producido un error. Inténtalo de nuevo más tarde.", timestamp: new Date().toISOString() });
               reject(err);
             }
           })

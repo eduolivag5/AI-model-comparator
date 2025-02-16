@@ -11,4 +11,5 @@ export interface Model {
 export interface Message {
   sender: "user" | "assistant"; // Indica quién envió el mensaje
   text: string; // El texto del mensaje
+  timestamp: string; // La fecha y hora en que se envió el mensaje
 }

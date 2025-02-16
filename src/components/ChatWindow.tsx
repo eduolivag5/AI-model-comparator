@@ -45,7 +45,7 @@ export default function ChatWindow({ model }: ChatWindowProps) {
 
       {/* Contenedor de mensajes que puede desplazarse, pero sin afectar el layout general */}
       <div className="flex-1 overflow-y-auto rounded-lg p-2">
-        {Object.keys(messages).length ? (
+        {Object.keys(messages).filter((key) => model.id === key).length ? (
           Object.keys(messages)
             .filter((key) => model.id === key)
             .map((key) => (
