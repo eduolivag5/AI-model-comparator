@@ -12,7 +12,7 @@ interface ChatWindowProps {
 export default function ChatWindow({ model }: ChatWindowProps) {
   const { messages } = useChatStore();
 
-  const messagesEndRef = useRef<HTMLDivElement | null>(null); 
+  const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {    
     if (messagesEndRef.current) {

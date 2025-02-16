@@ -1,4 +1,4 @@
-import { Avatar, Select, SelectItem } from "@heroui/react";
+import { Avatar, Chip, Select, SelectItem } from "@heroui/react";
 import { models } from "../data/models";
 import { useModelsStore } from "../store/models";
 
@@ -26,6 +26,10 @@ export default function ModelSelector() {
                 .map((model) => (
                     <SelectItem
                         startContent={<Avatar alt={model.name} className="w-6 h-6" src={model.icon} />}
+                        endContent={
+                            model.active ? <Chip className="border-none" color="success" size="sm" variant="dot"></Chip>
+                            : <Chip className="border-none" color="warning" size="sm" variant="dot"></Chip>
+                        }
                         key={model.id}
                     >
                         {model.name}
