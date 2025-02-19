@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useChatStore } from "../store/chats";
 import ModelSelector from "./ModelSelector";
 import { useModelsStore } from "../store/models";
-import { Button, Textarea } from "@heroui/react";
+import { Alert, Button, Textarea } from "@heroui/react";
 import { PaperAirplaneIcon, TrashIcon } from "@heroicons/react/24/solid";
 
 interface MessageInputProps {
@@ -63,18 +63,23 @@ const MessageInput = ({ onSend }: MessageInputProps) => {
           onPress={handleSend}
           variant="ghost"
           className="flex-1 py-1 disabled:bg-zinc-900"
-          disabled={selectedModels.length === 0 || sendCount >= MAX_SENDS_PER_DAY}
+          disabled={selectedModels.length === 0 || sendCount > MAX_SENDS_PER_DAY}
         >
           <PaperAirplaneIcon className="w-4 h-4" />
-          Enviar ({sendCount}/{MAX_SENDS_PER_DAY})
+          Enviar
         </Button>
         <Button variant="ghost" className="flex-1 py-1" onPress={handleDeleteConversation}>
           <TrashIcon className="w-4 h-4" />
           Borrar historial
         </Button>
       </div>
-      <p className="text-xs text-gray-400">(*) Los mensajes se borran automáticamente después de 24 horas.</p>
-      <p className="text-xs text-gray-400">(*) Solo se pueden enviar 10 mensajes / 24 horas.</p>
+      
+      {sendCount <= MAX_SENDS_PER_DAY ? (
+        <Alert variant="bordered" description={`Mensajes restantes: ${MAX_SENDS_PER_DAY - sendCount}/${MAX_SENDS_PER_DAY}`} title={<b>Límite de envío diario</b>} />
+      ) : (
+        <Alert color="warning" variant="bordered" description="Límite de envío diario alcanzado." title={<b>Límite de envío diario</b>} />
+      )}
+      
     </div>
   );
 };

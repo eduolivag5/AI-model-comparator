@@ -1,9 +1,10 @@
-import { Chip } from "@heroui/react";
+import { Avatar, Chip } from "@heroui/react";
 import { useChatStore } from "../store/chats";
 import { Model } from "../types";
 import ReactMarkdown from 'react-markdown';
 import { CheckIcon } from "../assets/icons/CheckIcon";
 import { useEffect, useRef } from "react";
+import { useUserSettings } from "../store/user";
 
 interface ChatWindowProps {
   model: Model;
@@ -11,6 +12,8 @@ interface ChatWindowProps {
 
 export default function ChatWindow({ model }: ChatWindowProps) {
   const { messages } = useChatStore();
+
+  const { profilePicture } = useUserSettings();
 
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
@@ -56,10 +59,10 @@ export default function ChatWindow({ model }: ChatWindowProps) {
                     className={`flex gap-2 ${msg.sender === "user" && "justify-end"}`}
                   >
                     {msg.sender === "assistant" && (
-                      <img
+                      <Avatar
                         src={model.icon}
-                        alt="Assistant"
-                        className="w-6 h-6 rounded-full"
+                        isBordered
+                        className="w-6 h-6 rounded-full transition-transform bg-transparent"
                       />
                     )}
                     
@@ -72,10 +75,10 @@ export default function ChatWindow({ model }: ChatWindowProps) {
                     </span>
                     
                     {msg.sender === "user" && (
-                      <img
-                        src="./profile-major.svg"
-                        alt="User"
-                        className="w-6 h-6 rounded-full"
+                      <Avatar
+                        src={profilePicture || undefined}
+                        isBordered
+                        className="w-6 h-6 rounded-full transition-transform bg-transparent"
                       />
                     )}
                   </div>

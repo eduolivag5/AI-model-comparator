@@ -22,7 +22,7 @@ export default function ModelSelector() {
             onChange={(e) => handleSelectionChange(e.target.value.split(","))} 
         >
             {models
-                .sort((a, b) => Number(b.active) - Number(a.active)) // true (1) se coloca antes que false (0)
+                .sort((a, b) => Number(b.active) - Number(a.active)) 
                 .map((model) => (
                     <SelectItem
                         startContent={<Avatar alt={model.name} className="w-6 h-6" src={model.icon} />}
