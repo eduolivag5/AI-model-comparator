@@ -1,4 +1,4 @@
-import { Avatar, Chip } from "@heroui/react";
+import { Chip } from "@heroui/react";
 import { useChatStore } from "../store/chats";
 import { Model } from "../types";
 import ReactMarkdown from 'react-markdown';
@@ -59,9 +59,8 @@ export default function ChatWindow({ model }: ChatWindowProps) {
                     className={`flex gap-2 ${msg.sender === "user" && "justify-end"}`}
                   >
                     {msg.sender === "assistant" && (
-                      <Avatar
+                      <img
                         src={model.icon}
-                        isBordered
                         className="w-6 h-6 rounded-full transition-transform bg-transparent"
                       />
                     )}
@@ -75,9 +74,8 @@ export default function ChatWindow({ model }: ChatWindowProps) {
                     </span>
                     
                     {msg.sender === "user" && (
-                      <Avatar
+                      <img
                         src={profilePicture || undefined}
-                        isBordered
                         className="w-6 h-6 rounded-full transition-transform bg-transparent"
                       />
                     )}
