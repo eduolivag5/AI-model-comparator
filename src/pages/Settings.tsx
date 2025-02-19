@@ -52,7 +52,7 @@ export default function Settings() {
     };
 
     return (
-        <Form onSubmit={handleSave} className="space-y-3 p-2">
+        <Form onSubmit={handleSave} className="w-full space-y-3 p-2">
             <div className="flex gap-4 items-center">
                 <Avatar isBordered size="lg" src={preview || undefined} alt="Foto de perfil" />
                 

@@ -8,14 +8,14 @@ export default function App() {
     return (
         <div className="h-[100dvh] flex flex-col">
             <NavBar />
-            <div className="flex-1 p-4 md:px-0 md:py-6 w-full max-w-6xl mx-auto flex overflow-auto">
+            <div className="flex-1 w-full p-4 md:px-0 md:py-6 max-w-6xl mx-auto flex overflow-auto">
                 <motion.div
                     key={location.pathname} // Clave única para animación en cada cambio de ruta
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                     transition={{ duration: 0.3, ease: "easeInOut" }}
-                    className="w-full"
+                    className="w-full flex overflow-auto"
                 >
                     <Outlet />
                 </motion.div>
