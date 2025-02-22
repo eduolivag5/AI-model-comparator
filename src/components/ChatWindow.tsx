@@ -27,7 +27,7 @@ export default function ChatWindow({ model }: ChatWindowProps) {
     <div className="flex flex-col h-full">
       <div className="flex-shrink-0 flex items-center justify-between mb-2 text-white">
         <div className="flex gap-4 items-center">
-          <img src={model.icon} alt={model.name} className="w-8 h-8" />
+          <img src={model.icon} alt={model.name} className="w-8 h-8 rounded-lg" />
           <div className="text-sm flex flex-col">
             <span className="font-bold">{model.name}</span>
             <span className="text-xs">{model.company}</span>

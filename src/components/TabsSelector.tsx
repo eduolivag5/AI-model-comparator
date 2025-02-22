@@ -12,8 +12,8 @@ export default function TabsSelector() {
             {selectedModels.map((model, index) => (
               <Tab key={model.id} className="h-full w-auto overflow-hidden" title={
                 <div className="flex items-center space-x-2">
-                  <img src={model.icon} alt={model.name} className="w-6 h-6" />
-                  <span>{model.name}</span>
+                  <img src={model.icon} alt={model.name} className="w-6 h-6 rounded-lg" />
+                  <span className="hidden md:block">{model.name}</span>
                 </div>
               }>
                 <Card className="flex-1 h-full">

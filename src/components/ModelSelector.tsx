@@ -25,7 +25,7 @@ export default function ModelSelector() {
                 .sort((a, b) => Number(b.active) - Number(a.active)) 
                 .map((model) => (
                     <SelectItem
-                        startContent={<Avatar alt={model.name} className="w-6 h-6" src={model.icon} />}
+                        startContent={<Avatar alt={model.name} className="w-6 h-6" radius="sm" src={model.icon} />}
                         endContent={
                             model.active ? <Chip className="border-none" color="success" size="sm" variant="dot"></Chip>
                             : <Chip className="border-none" color="warning" size="sm" variant="dot"></Chip>
